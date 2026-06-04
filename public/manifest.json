@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Dev Color Toolkit",
+    "version": "1.0",
+    "author": "Rohan Kishor Jadhao",
+    "description": "Pick colors from webpages",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": {
+            "16": "icons/color-picker.png",
+            "48": "icons/color-picker.png",
+            "128": "icons/color-picker.png"
+        }
+    },
+    "icons": {
+        "16": "icons/color-picker.png",
+        "48": "icons/color-picker.png",
+        "128": "icons/color-picker.png"
+    }
+}
