@@ -10,6 +10,10 @@ A sleek, high-performance Chrome extension designed for developers and designers
 * **Recent History:** Never lose a color—the extension keeps track of your recently picked colors in local storage.
 * **Clean UI:** Modern, dark-mode, glassmorphism-inspired interface with no scrollbars.
 
+## Screenshots
+<img width="960" height="705" alt="image" src="https://github.com/user-attachments/assets/bd19c3a6-6165-4a75-b672-dea2abb50d43" />
+<img width="212" height="154" alt="image" src="https://github.com/user-attachments/assets/437f6be8-735a-4f85-9653-d98706ee23f3" />
+
 ## 🛠️ Tech Stack
 
 * **Framework:** React
