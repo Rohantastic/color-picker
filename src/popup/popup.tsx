@@ -45,6 +45,7 @@ export default function Popup() {
     const copyColor = async (value: string) => {
         await navigator.clipboard.writeText(value);
         setCopied(true);
+        // hide after a short success animation
         setTimeout(() => {
             setCopied(false);
         }, 1200);
@@ -54,12 +55,13 @@ export default function Popup() {
         <div
             className="
                 w-[760px]
-                h-[560px]       
+                h-[560px]
                 overflow-hidden
                 bg-[#070B14]
                 text-white
                 p-6
                 relative
+                ui-fade-in
             "
         >
             {/* Background Glow */}
@@ -90,7 +92,7 @@ export default function Popup() {
 
                     {/* Main Color Preview */}
                     <div
-                        className="h-24 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 relative overflow-hidden shrink-0"
+                        className="h-24 rounded-2xl border border-white/10 shadow-2xl transition-all duration-500 relative overflow-hidden shrink-0 card-hover glow-accent"
                         style={{ background: color }}
                     >
                         <div className="absolute inset-0 bg-black/10" />
@@ -98,27 +100,39 @@ export default function Popup() {
 
                     {/* Color Input */}
                     <div className="flex gap-3 shrink-0">
-                        <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl px-4 py-2 text-base font-medium flex items-center">
+                        <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl px-4 py-2 text-base font-medium flex items-center input-focus placeholder-fade">
                             {color}
                         </div>
                         <button
                             onClick={() => copyColor(color)}
-                            className="px-4 rounded-xl bg-green-500 hover:scale-105 hover:bg-green-400 transition-all duration-300 font-medium"
+                            className="px-4 rounded-xl bg-green-500 hover:scale-105 hover:bg-green-400 transition-all duration-300 font-medium btn-interactive btn-scale btn-glow"
+                            aria-label={`Copy ${color}`}
                         >
-                            {copied ? "✅" : "Copy"}
+                            {copied ? (
+                                <span className="flex items-center gap-2">
+                                    <span className="checkmark">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path className="chk" d="M4 12.5l4.5 4.5L20 6" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </span>
+                                    Copied
+                                </span>
+                            ) : (
+                                "Copy"
+                            )}
                         </button>
                     </div>
 
                     {/* Pick Button */}
                     <button
                         onClick={pickColor}
-                        className="w-full py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 hover:scale-[1.02] transition-all duration-300 shadow-lg shrink-0"
+                        className="w-full py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-purple-500 via-violet-500 to-blue-500 hover:scale-[1.02] transition-all duration-300 shadow-lg shrink-0 btn-interactive btn-scale glow-accent"
                     >
                         🎯 Pick Color
                     </button>
 
                     {/* Recent Colors */}
-                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shrink-0">
+                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shrink-0 card-hover">
                         <div className="flex justify-between items-center mb-3">
                             <h3 className="font-semibold text-sm">Recent Colors</h3>
                             <button
@@ -133,12 +147,17 @@ export default function Popup() {
                         </div>
                         <div className="flex gap-2 flex-wrap">
                             {recentColors.map((c) => (
-                                <div
-                                    key={c}
-                                    onClick={() => setColor(c)}
-                                    className="w-10 h-10 rounded-xl cursor-pointer border border-white/10 hover:scale-110 hover:rotate-3 transition-all duration-300"
-                                    style={{ background: c }}
-                                />
+                                <div key={c} className="relative color-swatch">
+                                    <div
+                                        onClick={() => setColor(c)}
+                                        className="w-10 h-10 rounded-xl cursor-pointer border border-white/10 hover:scale-110 transition-all duration-300 transform-gpu"
+                                        style={{ background: c }}
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-label={`Select recent color ${c}`}
+                                    />
+                                    <div className="tooltip">{c}</div>
+                                </div>
                             ))}
                             {recentColors.length === 0 && (
                                 <span className="text-xs text-gray-500 italic">No recent colors yet...</span>
@@ -147,7 +166,7 @@ export default function Popup() {
                     </div>
 
                     {/* UI Tip (Pushed to bottom) */}
-                    <div className="mt-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 hover:border-yellow-500/30 transition-all duration-300">
+                    <div className="mt-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 hover:border-yellow-500/30 transition-all duration-300 card-hover">
                         <p className="text-yellow-400 mb-1 font-semibold text-sm">💡 UI Tip</p>
                         <p className="text-gray-300 text-xs leading-relaxed">{tip}</p>
                     </div>
@@ -168,7 +187,7 @@ export default function Popup() {
                             ].map((item) => (
                                 <div
                                     key={item.label}
-                                    className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 hover:border-purple-500/30 transition-all duration-300 flex flex-col justify-center"
+                                    className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 hover:border-purple-500/30 transition-all duration-300 flex flex-col justify-center card-hover"
                                 >
                                     <p className="text-gray-400 text-xs mb-1">{item.label}</p>
                                     <div className="flex justify-between items-center">
@@ -177,7 +196,8 @@ export default function Popup() {
                                         </span>
                                         <button
                                             onClick={() => copyColor(item.value)}
-                                            className={`text-xs ${item.color} hover:opacity-80 shrink-0`}
+                                            className={`text-xs ${item.color} hover:opacity-80 shrink-0 btn-interactive`}
+                                            aria-label={`Copy ${item.label} value`}
                                         >
                                             Copy
                                         </button>
@@ -188,7 +208,7 @@ export default function Popup() {
                     </div>
 
                     {/* Gradient Generator */}
-                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex-1 flex flex-col hover:border-purple-500/30 transition-all duration-300">
+                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex-1 flex flex-col hover:border-purple-500/30 transition-all duration-300 gradient-preview card-hover">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-sm font-semibold">Gradient Generator</h3>
                             <button
@@ -201,19 +221,33 @@ export default function Popup() {
                         
                         {/* Enlarged gradient preview to fill remaining space cleanly */}
                         <div
-                            className="flex-1 rounded-xl mb-4 shadow-xl border border-white/10"
+                            className="flex-1 rounded-xl mb-4 shadow-xl border border-white/10 gradient-preview"
                             style={{ background: gradient }}
                         />
                         
                         <button
                             onClick={() => copyColor(gradient)}
-                            className="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 font-medium hover:scale-[1.02] transition-all duration-300 text-sm"
+                            className="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 font-medium hover:scale-[1.02] transition-all duration-300 text-sm btn-interactive btn-scale btn-glow"
                         >
                             Copy CSS Gradient
                         </button>
                     </div>
                 </div>
 
+            </div>
+
+            {/* Toast container for copy success */}
+            <div className="toast-root" aria-live="polite" aria-atomic="true">
+                {copied && (
+                    <div className="toast">
+                        <div className="checkmark" aria-hidden>
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path className="chk" d="M4 12.5l4.5 4.5L20 6" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+                        <div>Copied!</div>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -7,3 +7,100 @@ body {
   color: white;
   font-family: Inter, sans-serif;
 }
+
+/* Global smooth transitions and microinteraction primitives */
+:root{
+  --transition: 250ms;
+  --easing: cubic-bezier(.2,.9,.2,1);
+  --accent-1: rgba(124,58,237,0.9); /* purple-600 */
+  --accent-2: rgba(59,130,246,0.9); /* blue-500 */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* apply smooth transitions for common properties (avoids 'all' drawbacks) */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, transform, box-shadow, opacity, filter;
+  transition-duration: var(--transition);
+  transition-timing-function: var(--easing);
+}
+
+/* Fade in on load */
+.ui-fade-in{opacity:0;animation:fadeIn var(--transition) ease forwards;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Card hover effect */
+.card-hover{
+  transform: translateZ(0);
+}
+.card-hover:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6), 0 0 30px rgba(124,58,237,0.06);
+  border-color: rgba(124,58,237,0.18);
+}
+
+/* Buttons */
+.btn-interactive{cursor:pointer}
+.btn-interactive:focus{outline:none;box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+.btn-scale:hover{transform:scale(1.02)}
+.btn-scale:active{transform:scale(0.98)}
+.btn-glow{box-shadow:0 6px 24px rgba(124,58,237,0.08), inset 0 1px 0 rgba(255,255,255,0.02)}
+
+/* Soft gradient glow utility */
+.glow-accent{
+  position:relative;
+}
+.glow-accent::after{
+  content:"";
+  position:absolute;inset:0;border-radius:inherit;z-index:-1;
+  background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+  filter:blur(18px);opacity:0.12;transition:opacity var(--transition) var(--easing);
+}
+.glow-accent:hover::after{opacity:0.22}
+
+/* Copy toast / snackbar */
+.toast-root{
+  position:fixed;right:18px;top:18px;z-index:60;pointer-events:none;
+}
+.toast{
+  pointer-events:auto;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.06);color:white;transform:translateY(-6px);opacity:0;
+  animation:toastIn 260ms var(--easing) forwards;
+}
+@keyframes toastIn{to{opacity:1;transform:none}}
+
+/* Checkmark animation */
+.checkmark svg{width:18px;height:18px;display:block}
+.checkmark .chk{stroke-dasharray:48;stroke-dashoffset:48;stroke-width:2.5;stroke:#00ff9d;fill:none;animation:check 360ms ease forwards;}
+@keyframes check{to{stroke-dashoffset:0}}
+
+/* Gradient shimmer */
+.gradient-preview{position:relative;overflow:hidden}
+.gradient-preview::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.06) 80%, rgba(255,255,255,0.03) 100%);transform:translateX(-60%);opacity:0.6;mix-blend-mode:overlay;pointer-events:none;animation:shimmer 6s linear infinite}
+@keyframes shimmer{0%{transform:translateX(-60%)}50%{transform:translateX(10%)}100%{transform:translateX(60%)}}
+.gradient-preview:hover{transform:translateY(-4px) scale(1.01)}
+
+/* Floating microinteraction */
+.float-on-hover{transition:transform var(--transition) var(--easing)}
+.float-on-hover:hover{transform:translateY(-6px)}
+
+/* Recent color tooltip */
+.color-swatch{position:relative}
+.color-swatch .tooltip{
+  position:absolute;left:50%;transform:translateX(-50%) translateY(-8px);bottom:calc(100% + 6px);background:#0b1220;padding:6px 8px;border-radius:8px;font-size:12px;color:#dbeafe;border:1px solid rgba(255,255,255,0.06);opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 8px 20px rgba(2,6,23,0.6)}
+.color-swatch:hover .tooltip{opacity:1}
+
+/* Input focus */
+.input-focus:focus{outline:none;border-color:rgba(124,58,237,0.7);box-shadow:0 10px 30px rgba(124,58,237,0.06);}
+.placeholder-fade::placeholder{transition:opacity var(--transition) var(--easing);}
+.placeholder-fade:focus::placeholder{opacity:0.45}
+
+/* Misc polish */
+.backdrop-blur-soft{backdrop-filter:blur(6px)}
+.layered-shadow{box-shadow:0 8px 30px rgba(2,6,23,0.6), 0 2px 8px rgba(0,0,0,0.45)}
