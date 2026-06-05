@@ -25,7 +25,7 @@ A sleek, high-performance Chrome extension designed for developers and designers
 
 1.  **Clone this repository:**
     ```bash
-    git clone [https://github.com/yourusername/dev-color-toolkit.git](https://github.com/rohantastic/dev-color-toolkit.git)
+    git clone [https://github.com/rohantastic/dev-color-toolkit.git](https://github.com/rohantastic/dev-color-toolkit.git)
     ```
 2.  **Install dependencies:**
     ```bash
